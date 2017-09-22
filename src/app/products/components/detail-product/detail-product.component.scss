@@ -1,0 +1,37 @@
+.container {
+  margin-top: 10px;
+
+  .buttons-holder {
+    margin-bottom: 10px;
+
+    .btn:first-of-type {
+      margin-right: 10px;
+    }
+  }
+
+  .title-price {
+    height: 40px;
+    padding: 10px;
+
+    .card-title {
+      margin: 0;
+    }
+  }
+
+  .card-text {
+    padding: 10px;
+  }
+
+  .form-group .btn {
+    margin: 10px 0;
+
+    &:first-of-type {
+      margin-right: 10px;
+    }
+  }
+}
+
+.bg-dark {
+  color: white;
+  border: none;
+}

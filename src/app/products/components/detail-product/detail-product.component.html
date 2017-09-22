@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row">
+
+    <div class="mx-auto col-xs-12 col-sm-6" *ngIf="!editMode; else EditMode">
+      <div class="buttons-holder d-flex align-items-center justify-content-end">
+        <button class="btn btn-outline-info btn-sm" (click)="editModeToggle()"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button class="btn btn-outline-danger btn-sm" (click)="openDeletePopup(confirmDelete)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="card">
+        <img class="card-img-top" [src]="product.image" [alt]="product.title">
+        <div class="card-block">
+
+          <div class="title-price d-flex align-items-center justify-content-between">
+            <h4 class="card-title">{{ product.title }}</h4>
+            <span class="price"><i class="fa fa-usd" aria-hidden="true"></i>{{ product.price }}</span>
+          </div>
+
+          <p class="card-text">{{ product.description }}</p>
+
+        </div>
+      </div>
+    </div>
+
+    <ng-template #EditMode>
+      <div class="mx-auto col-xs-12 col-sm-6">
+        <form (ngSubmit)="updateProduct();" [formGroup]="editProduct">
+
+          <field-validator [inputField]="editProduct.get('title')" [labelText]="'Title'"
+                           [inputErrors]="editProduct.get('title').errors" [errorDefs]="validationMessagesObject">
+            <input class="form-control" type="text" placeholder="Enter title" name="title" formControlName="title">
+          </field-validator>
+
+          <field-validator [inputField]="editProduct.get('description')" [labelText]="'Description'"
+                           [inputErrors]="editProduct.get('description').errors" [errorDefs]="validationMessagesObject">
+            <textarea class="form-control" rows="10" placeholder="Enter description" name="description" formControlName="description"></textarea>
+          </field-validator>
+
+          <field-validator [inputField]="editProduct.get('image')" [labelText]="'Set new image'"
+                           [inputErrors]="editProduct.get('image').errors" [errorDefs]="validationMessagesObject">
+            <div [ngClass]="{'has-error': !image && (editProduct.get('image').touched || editProduct.get('image').dirty)}">
+              <div class="file-container form-control">
+                <input type="file" accept="image/*" formControlName="image" (change)="addImage($event)">
+              </div>
+              <span class="help-block" *ngIf="!image && (editProduct.get('image').touched || editProduct.get('image').dirty)">
+                  {{ validationMessagesObject.required }}
+              </span>
+            </div>
+          </field-validator>
+
+          <field-validator [inputField]="editProduct.get('price')" [labelText]="'Price'"
+                           [inputErrors]="editProduct.get('price').errors" [errorDefs]="validationMessagesObject">
+            <input class="form-control" type="number" placeholder="Enter price" name="price" formControlName="price">
+          </field-validator>
+
+          <div class="form-group text-right">
+            <input class="btn btn-outline-success" type="submit" [disabled]="!editProduct.valid" value="Update">
+            <input class="btn btn-outline-danger" type="button" (click)="editModeToggle()" value="Cancel">
+          </div>
+        </form>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+
+<ng-template #confirmDelete let-c="close" let-d="dismiss">
+  <div class="modal-header bg-dark d-flex align-items-center justify-content-center">
+    <h4 class="modal-title">Confirm delete product</h4>
+  </div>
+  <div class="modal-body bg-dark d-flex align-items-center justify-content-center">
+    <span class="message">Are you sure that you want to delete product?</span>
+  </div>
+  <div class="modal-footer bg-dark d-flex align-items-center justify-content-center">
+    <button type="button" class="btn btn-outline-info" (click)="d('Cross click')">Cancel</button>
+    <button type="button" class="btn btn-outline-danger" (click)="c('Close click')">Delete</button>
+  </div>
+</ng-template>

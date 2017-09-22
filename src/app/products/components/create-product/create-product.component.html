@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-md-8 mx-auto col-xs-12">
+      <form (ngSubmit)="createProduct(); creationProduct.reset()" [formGroup]="creationProduct">
+
+        <field-validator [inputField]="creationProduct.get('title')" [labelText]="'Title'"
+                         [inputErrors]="creationProduct.get('title').errors" [errorDefs]="validationMessagesObject">
+          <input class="form-control" type="text" placeholder="Enter title" name="title" formControlName="title">
+        </field-validator>
+
+        <field-validator [inputField]="creationProduct.get('description')" [labelText]="'Description'"
+                         [inputErrors]="creationProduct.get('description').errors" [errorDefs]="validationMessagesObject">
+          <textarea class="form-control" rows="10" placeholder="Enter description" name="description" formControlName="description"></textarea>
+        </field-validator>
+
+        <field-validator [inputField]="creationProduct.get('image')" [labelText]="'Image'"
+                         [inputErrors]="creationProduct.get('image').errors" [errorDefs]="validationMessagesObject">
+          <div [ngClass]="{'has-error': !image && (creationProduct.get('image').touched || creationProduct.get('image').dirty)}">
+            <div class="file-container form-control">
+              <input type="file" accept="image/*" formControlName="image" (change)="addImage($event)">
+            </div>
+            <span class="help-block" *ngIf="!image && !errorImage && (creationProduct.get('image').touched || creationProduct.get('image').dirty)">
+              {{ validationMessagesObject.required }}
+            </span>
+            <span class="help-block" *ngIf="!image && errorImage && (creationProduct.get('image').touched || creationProduct.get('image').dirty)">
+              {{ validationMessagesObject.imageSize }}
+            </span>
+          </div>
+        </field-validator>
+
+        <field-validator [inputField]="creationProduct.get('price')" [labelText]="'Price'"
+                         [inputErrors]="creationProduct.get('price').errors" [errorDefs]="validationMessagesObject">
+          <input class="form-control" type="number" placeholder="Enter price" name="price" formControlName="price">
+        </field-validator>
+
+        <div class="form-group text-right">
+          <input class="btn btn-outline-success" type="submit" [disabled]="!creationProduct.valid || !image" value="Create">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
