@@ -42,8 +42,11 @@
               <div class="file-container form-control">
                 <input type="file" accept="image/*" formControlName="image" (change)="addImage($event)">
               </div>
-              <span class="help-block" *ngIf="!image && (editProduct.get('image').touched || editProduct.get('image').dirty)">
+              <span class="help-block" *ngIf="!image && !errorImage && (editProduct.get('image').touched || editProduct.get('image').dirty)">
                   {{ validationMessagesObject.required }}
+              </span>
+              <span class="help-block" *ngIf="!image && errorImage && (editProduct.get('image').touched || editProduct.get('image').dirty)">
+                {{ validationMessagesObject.imageSize }}
               </span>
             </div>
           </field-validator>
@@ -54,7 +57,7 @@
           </field-validator>
 
           <div class="form-group text-right">
-            <input class="btn btn-outline-success" type="submit" [disabled]="!editProduct.valid" value="Update">
+            <input class="btn btn-outline-success" type="submit" [disabled]="!editProduct.valid || errorImage" value="Update">
             <input class="btn btn-outline-danger" type="button" (click)="editModeToggle()" value="Cancel">
           </div>
         </form>

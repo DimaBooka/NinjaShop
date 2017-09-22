@@ -20,6 +20,7 @@ export class DetailProductComponent implements OnInit {
   public validationMessagesObject = validationMessages;
   public image: string;
   public index: number;
+  private errorImage: boolean = false;
 
   /* For unit tests */
   get _route() { return this.route };
@@ -66,8 +67,12 @@ export class DetailProductComponent implements OnInit {
   }
 
   public addImage(event) {
+    this.errorImage = false;
     let target = event.target || event.srcElement;
-    this.fileToBase64(target.files[0]);
+    if (target.files[0] && target.files[0].size / 1024 / 1024 > 2)
+      this.errorImage = true;
+    else if (target.files && target.files.length > 0)
+      this.fileToBase64(target.files[0]);
   }
 
   editModeToggle() {

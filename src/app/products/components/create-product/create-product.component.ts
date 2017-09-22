@@ -53,7 +53,7 @@ export class CreateProductComponent implements OnInit {
     let target = event.target || event.srcElement;
     if (target.files[0] && target.files[0].size / 1024 / 1024 > 2)
       this.errorImage = true;
-    else
+    else if (target.files && target.files.length > 0)
       this.fileToBase64(target.files[0]);
   }
 
